@@ -1,6 +1,4 @@
-using System;
-
-namespace TaskManager.Models
+namespace TaskManager.Models.ViewModels
 {
     public class ErrorViewModel
     {
