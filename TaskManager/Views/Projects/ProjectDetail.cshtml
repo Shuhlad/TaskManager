@@ -1,5 +1,6 @@
 ﻿@using TaskManager.Models
-@model TaskManager.Models.Project
+@using TaskStatus = TaskManager.Models.TaskStatus
+@model TaskManager.Models.ViewModels.ProjectDetailAndTasksViewModel
 
 @{
     ViewBag.Title = "title";
@@ -9,7 +10,7 @@
 <div class="container">
     <div class="card  full-width main-detail-box black-border">
         <div>
-            <h4 class="detail-top"> @Model.Name </h4>
+            <h4 class="detail-top"> @Model.Project.Name </h4>
         </div>
         <div class="block-separator black-border">
             <div class="">
@@ -20,7 +21,7 @@
                                 Priority 
                             </td>
                             <td class="table-distance">
-                                @Model.Priority
+                                @Model.Project.Priority
                             </td>
                         </tr>
                         <tr>
@@ -28,17 +29,17 @@
                                 Status
                             </td>
                             <td class="table-distance">
-                                @if (Model.Status == ProjectStatus.NotStarted)
+                                @if (Model.Project.Status == ProjectStatus.NotStarted)
                                 {
-                                    <p class="ColorRed">@Model.Status</p>
+                                    <p class="ColorRed">@Model.Project.Status</p>
                                 }
-                                @if (Model.Status == ProjectStatus.Active)
+                                @if (Model.Project.Status == ProjectStatus.Active)
                                 {
-                                    <p class="ColorBlue">@Model.Status</p>
+                                    <p class="ColorBlue">@Model.Project.Status</p>
                                 }
-                                @if (Model.Status == ProjectStatus.Completed)
+                                @if (Model.Project.Status == ProjectStatus.Completed)
                                 {
-                                    <p class="ColorGreen">@Model.Status</p>
+                                    <p class="ColorGreen">@Model.Project.Status</p>
                                 }
                             </td>
                         </tr>
@@ -47,7 +48,7 @@
                                 Id 
                             </td>
                             <td class="table-distance">
-                                @Model.Id
+                                @Model.Project.Id
                             </td>
                         </tr>
                         <tr>
@@ -55,7 +56,7 @@
                                 Create Date
                             </td>
                             <td class="table-distance">
-                                @Model.CreateDate.ToLocalTime();
+                                @Model.Project.CreateDate.ToLocalTime();
                             </td>
                         </tr>
                         <tr>
@@ -63,13 +64,13 @@
                                 End Date
                             </td>
                             <td class="table-distance">
-                                @if (@Model.FinishDate == null)
+                                @if (@Model.Project.FinishDate == null)
                                 {
                                     <p>Not closed yet</p>
                                 }
                                 else
                                 {
-                                    <p> @Model.FinishDate</p>
+                                    <p> @Model.Project.FinishDate</p>
                                 }
                             </td>
                         </tr>
@@ -77,6 +78,7 @@
                 </div>
                 <div class="button-block">
                     <a class="btn btn-dark text-center" asp-action="Index" asp-controller="Projects">Return</a>
+                    
                 </div>
             </div>
             <div class="description-block black-border full-width">
@@ -84,9 +86,53 @@
                     <h4 class="detail-top border-space full-width"> Project Description </h4>
                 </div>
                 <div>
-                    <p>@Model.Description</p>
+                    <p>@Model.Project.Description</p>
                 </div>
             </div>
         </div>
+    </div>
+    <div>
+        <h2>Current project's tasks</h2>
+        @if (!Model.Tasks.Any())
+        {
+            <h3 class="display-5">Tasks list is empty yet</h3>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var task in Model.Tasks)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a asp-action="" asp-controller="" asp-route-id="@task.Id">@task.Name</a>
+                                </h5>
+                                <p class="card-text"><small class="text-muted">Created: @task.CreateDate</small></p>
+                                <p class="card-text"><small class="text-muted">Priority: @task.Priority</small></p>
+                                <p class="card-text">
+                                    @if (task.Status == TaskStatus.ToDo)
+                                        {
+                                            <p class="ColorRed">@task.Status</p>
+                                        }
+                                        @if (task.Status == TaskStatus.InProgress)
+                                        {
+                                            <p class="ColorBlue">@task.Status</p>
+                                        }
+                                        @if (task.Status == TaskStatus.Done)
+                                        {
+                                            <p class="ColorGreen">@task.Status</p>
+                                        }
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a class="btn btn-light border" asp-action="" asp-controller="" asp-route-id="@task.Id">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+        }
     </div>
 </div>

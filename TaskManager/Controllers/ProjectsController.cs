@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TaskManager.Models;
 using TaskManager.Models.Data;
 using TaskManager.Models.ViewModels;
@@ -30,7 +31,13 @@ namespace TaskManager.Controllers
             var project = _db.Projects.FirstOrDefault(t => t.Id == id);
             if (project is null)
                 return NotFound();
-            return View(project);
+            var tasks = _db.Tasks.AsSplitQuery().Where(t => t.ProjectId == id).ToList();
+            var model = new ProjectDetailAndTasksViewModel()
+            {
+                Project = project,
+                Tasks = tasks
+            };
+            return View(model);
         }
         [HttpGet]
         [ActionName("AddProject")]
