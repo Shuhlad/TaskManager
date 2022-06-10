@@ -1,0 +1,62 @@
+﻿@using TaskManager.Models
+@using ProjectStatus = TaskManager.Models.ProjectStatus
+@model System.Collections.Generic.List<TaskManager.Models.Project>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container"> 
+    <h2 class="text-center">Project list</h2>
+    
+        @if (Model.Any())
+        {
+            <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">
+                    Project id
+                </th>
+                <th class="text-center">
+                    Project Name
+                </th>
+                <th class="text-center" >
+                    Status
+                </th>
+                <th class="text-center">
+                    Actions
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+             @foreach (var project in @Model){
+                 <tr>
+                     <td class="text-center" > @project.Id</td>
+                     
+                     <td class="text-center" > @project.Name</td>
+                     
+                     <td class="text-center" >
+                             @if (project.Status == ProjectStatus.NotStarted)
+                             {
+                                 <p class="ColorRed">@project.Priority</p>
+                             }
+                             @if (project.Status == ProjectStatus.Active)
+                             {
+                                 <p class="ColorBlue">@project.Priority</p>
+                             }
+                             @if (project.Status == ProjectStatus.Completed)
+                             {
+                                 <p class="ColorGreen">@project.Priority</p>
+                             }
+                         </td>
+                     <td class="text-center">
+                         <a class="btn-primary btn text-center" asp-action="Detail" asp-controller="Projects" asp-route-id="@project.Id">Detail</a>
+                     </td>
+                 </tr>
+             }
+            </tbody>
+        </table>
+        }
+    <a class="btn-primary btn margin-right: 0" asp-action="Add" asp-controller="Projects" >Add new project</a>
+</div>
