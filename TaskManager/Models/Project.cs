@@ -2,27 +2,24 @@
 
 namespace TaskManager.Models
 {
-    public enum TaskStatus 
+    public enum ProjectStatus 
     {
-        ToDo,
-        InProgress,
-        Done
+        NotStarted,
+        Active,
+        Completed
     }
-    public class Task
+    public class Project
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         
-        public TaskStatus Status { get; set; }
-        
         public int Priority { get; set; }
+        
+        public ProjectStatus Status { get; set; }
         
         public DateTime CreateDate { get; set; } 
         public DateTime? InProgressDate { get; set; }
-        public DateTime? DoneDate { get; set; }
-
-        public int ProjectId { get; set; }
-        public Project ConnectedProject { get; set; }
+        public DateTime? DoneDate { get; set; }     
     }
 }
