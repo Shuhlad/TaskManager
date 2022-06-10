@@ -19,7 +19,6 @@ namespace TaskManager.Models
         public ProjectStatus Status { get; set; }
         
         public DateTime CreateDate { get; set; } 
-        public DateTime? InProgressDate { get; set; }
-        public DateTime? DoneDate { get; set; }     
+        public DateTime? FinishDate { get; set; }     
     }
 }
