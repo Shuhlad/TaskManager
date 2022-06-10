@@ -19,5 +19,15 @@ namespace TaskManager.Controllers
             var projects = _db.Projects.ToList();
             return View(projects);
         }
+        [HttpGet]
+        [ActionName("ProjectDetail")]
+        public IActionResult Detail(int id)
+        {
+            var project = _db.Projects.FirstOrDefault(t => t.Id == id);
+            if (project is null)
+                return NotFound();
+            return View(project);
+        }
+        
     }
 }
