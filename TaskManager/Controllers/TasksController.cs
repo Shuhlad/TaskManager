@@ -55,5 +55,30 @@ namespace TaskManager.Controllers
             }
             return View("AddTask",model);
         }
+
+        [HttpGet]
+        [ActionName("EditTask")]
+        public IActionResult Edit(int id)
+        {
+            var task = _db.Tasks
+                .FirstOrDefault(t => t.Id == id);
+            if (task is null)
+            {
+                return NotFound();
+            }
+            return View(task);
+        }
+
+        [HttpPost]
+        [ActionName("EditTask")]
+        public IActionResult Edit(Task task)
+        {
+            if (task is null)
+                return NotFound();
+
+            _db.Tasks.Update(task);
+            _db.SaveChanges();
+            return RedirectToAction("ProjectDetail","Projects", new {id = task.ProjectId});
+        }
     }
 }
