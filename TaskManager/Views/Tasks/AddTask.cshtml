@@ -1,4 +1,4 @@
-﻿@model Project
+﻿@model TaskManager.Models.ViewModels.AddTaskViewModel
 
 @{
     ViewBag.Title = "title";
@@ -9,20 +9,20 @@
     <div class="col-12">
         <div class="card w-50">
             <div class="card-body">
-                <form asp-action="AddProject" asp-controller="Projects" method="post">
+                <form asp-action="AddTask" asp-controller="Tasks" method="post">
                     <div class="validation" asp-validation-summary="All"></div>
                     <div class="mb-3">
-                        <input asp-for="Name" class="form-control" type="text" placeholder="Name of project">
+                        <input asp-for="Name" class="form-control" type="text" placeholder="Name of task">
                         <span asp-validation-for="Name"></span>
                     </div>
                     <div class="mb-3">
                         <textarea asp-for="Description" class="form-control" placeholder="Description..."></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"> Select a priority number (from 1 to 10)</label><br/>
+                         <label class="form-label"> Select a priority number (from 1 to 10)</label><br/>
                         <input asp-for="Priority" class="form-control" placeholder="Priority number">
                     </div>
-                    
+                     <input type="hidden" asp-for="ProjectId" value="@ViewBag.ProjectId">
                     <button class="btn btn-light border" type="submit">Create</button>
                 </form>
             </div>

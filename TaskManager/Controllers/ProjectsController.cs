@@ -37,6 +37,7 @@ namespace TaskManager.Controllers
                 Project = project,
                 Tasks = tasks
             };
+            ViewBag.ProjectId = project.Id;
             return View(model);
         }
         [HttpGet]
@@ -45,6 +46,7 @@ namespace TaskManager.Controllers
         {
             return View();
         }
+        
         [HttpPost]
         [ActionName("AddProject")]
         public async Task<IActionResult> Add(Project project)
