@@ -19,7 +19,7 @@ namespace TaskManager.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
+        public async Task<IActionResult> Index(SortState sortOrder = SortState.IdAsc)
         {
             IQueryable<Project> projects = _db.Projects;
             ViewBag.IdSort = sortOrder==SortState.IdAsc ? SortState.IdDesc : SortState.IdAsc;
@@ -58,7 +58,7 @@ namespace TaskManager.Controllers
                     projects = projects.OrderByDescending(s => s.CreateDate);
                     break;
                 default:
-                    projects = projects.OrderBy(s => s.Name);
+                    projects = projects.OrderBy(s => s.Id);
                     break;
             }
             
@@ -138,6 +138,40 @@ namespace TaskManager.Controllers
             _db.Projects.Remove(project);
             _db.SaveChanges();
             return RedirectToAction("ProjectDetail","Projects",new {id = project.Id});
+        }
+        
+        public IActionResult ToActive(int id)
+        {
+            var project = _db.Projects.FirstOrDefault(t => t.Id == id);
+            if (project is null)
+                return NotFound();
+            if (project.Status == ProjectStatus.NotStarted)
+            {
+                project.Status = ProjectStatus.Active;
+                _db.SaveChanges();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Only not started project can become active";
+            }
+            return RedirectToAction("ProjectDetail","Projects", new {id = project.Id});
+        }
+
+        public IActionResult ToCompleted(int id)
+        {
+            var project = _db.Projects.FirstOrDefault(t => t.Id == id);
+            if (project is null)
+                return NotFound();
+            if (project.Status == ProjectStatus.Active)
+            {
+                project.Status = ProjectStatus.Completed;
+                _db.SaveChanges();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Only active project can become completed";
+            }
+            return RedirectToAction("ProjectDetail","Projects", new {id = project.Id});
         }
     }
 }

@@ -78,8 +78,20 @@
                 <div class="button-block">
                     <a class="btn btn-dark text-center" asp-action="Index" asp-controller="Projects" asp-route-id="@Model.Project.Id">Return</a>
                     <a class="btn btn-dark text-center" asp-action="EditProject" asp-controller="Projects" asp-route-id="@Model.Project.Id">Edit</a>
-                    <a class="btn btn-dark text-center" asp-action="DeleteProject" asp-controller="Projects" asp-route-id="@Model.Project.Id">Delete</a>
                     <a class="btn btn-dark text-center" asp-action="AddTask" asp-controller="Tasks" asp-route-id="@Model.Project.Id">Add task</a>
+                    @if (Model.Project.Status == ProjectStatus.NotStarted)
+                                    {
+                                        <a class="card-footer btn-primary btn text-center" asp-action="ToActive" asp-controller="Projects" asp-route-id="@Model.Project.Id" method="POST">Start project</a>
+                                        <a class="card-footer btn-danger btn text-center" asp-action="DeleteProject" asp-controller="Projects" asp-route-id="@Model.Project.Id" method="POST">Delete project</a>
+                                    }
+                                    @if (Model.Project.Status == ProjectStatus.Active)
+                                    {
+                                        <a class="card-footer btn-primary btn text-center" asp-action="ToCompleted" asp-controller="Projects" asp-route-id="@Model.Project.Id" method="POST">Finish project</a>
+                                    }
+                                    @if (Model.Project.Status == ProjectStatus.Completed)
+                                    {
+                                        <a class="card-footer btn-danger btn text-center" asp-action="DeleteProject" asp-controller="Projects" asp-route-id="@Model.Project.Id" method="POST">Delete project</a>
+                                    }
                 </div>
             </div>
             <div class="description-block black-border full-width">
