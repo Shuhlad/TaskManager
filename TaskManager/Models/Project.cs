@@ -9,6 +9,19 @@ namespace TaskManager.Models
         Active,
         Completed
     }
+    public enum SortState
+    {
+        IdAsc,
+        IdDesc,
+        NameAsc,    
+        NameDesc,
+        PriorityAsc, 
+        PriorityDesc,    
+        StatusAsc, 
+        StatusDesc,
+        CreateDateAsc,
+        CreateDateDesc
+    }
     public class Project
     {
         public int Id { get; set; }

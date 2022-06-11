@@ -76,8 +76,10 @@
                     </table>
                 </div>
                 <div class="button-block">
-                    <a class="btn btn-dark text-center" asp-action="Index" asp-controller="Projects">Return</a>
-                    <a class="btn btn-dark text-center" asp-action="AddTask" asp-controller="Tasks" asp-route-id="@ViewBag.ProjectId">Add task</a>
+                    <a class="btn btn-dark text-center" asp-action="Index" asp-controller="Projects" asp-route-id="@Model.Project.Id">Return</a>
+                    <a class="btn btn-dark text-center" asp-action="EditProject" asp-controller="Projects" asp-route-id="@Model.Project.Id">Edit</a>
+                    <a class="btn btn-dark text-center" asp-action="DeleteProject" asp-controller="Projects" asp-route-id="@Model.Project.Id">Delete</a>
+                    <a class="btn btn-dark text-center" asp-action="AddTask" asp-controller="Tasks" asp-route-id="@Model.Project.Id">Add task</a>
                 </div>
             </div>
             <div class="description-block black-border full-width">

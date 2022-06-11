@@ -19,11 +19,53 @@ namespace TaskManager.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
         {
-            var projects = _db.Projects.ToList();
-            return View(projects);
+            IQueryable<Project> projects = _db.Projects;
+            ViewBag.IdSort = sortOrder==SortState.IdAsc ? SortState.IdDesc : SortState.IdAsc;
+            ViewBag.NameSort = sortOrder==SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+            ViewBag.PrioritySort = sortOrder == SortState.PriorityAsc ? SortState.PriorityDesc : SortState.PriorityAsc;
+            ViewBag.StatusSort = sortOrder == SortState.StatusAsc ? SortState.StatusDesc : SortState.StatusAsc;
+            ViewBag.CreateDateSort = sortOrder == SortState.CreateDateAsc ? SortState.CreateDateDesc : SortState.CreateDateAsc;
+
+            switch (sortOrder)
+            {
+                case SortState.IdDesc:
+                    projects = projects.OrderByDescending(s => s.Name);
+                    break;
+                case SortState.NameDesc:
+                    projects = projects.OrderByDescending(s => s.Name);
+                    break;
+                case SortState.NameAsc:
+                    projects = projects.OrderBy(s => s.Name);
+                    break;
+                case SortState.PriorityAsc:
+                    projects = projects.OrderBy(s => s.Priority);
+                    break;
+                case SortState.PriorityDesc: 
+                    projects = projects.OrderByDescending(s => s.Priority);
+                    break;
+                case SortState.StatusAsc:
+                    projects = projects.OrderBy(s => s.Status);
+                    break;
+                case SortState.StatusDesc:
+                    projects = projects.OrderByDescending(s => s.Status);
+                    break;
+                case SortState.CreateDateAsc:
+                    projects = projects.OrderBy(s => s.CreateDate);
+                    break;
+                case SortState.CreateDateDesc:
+                    projects = projects.OrderByDescending(s => s.CreateDate);
+                    break;
+                default:
+                    projects = projects.OrderBy(s => s.Name);
+                    break;
+            }
+            
+            return View( await projects.AsNoTracking().ToListAsync());
         }
+        
+        
         [HttpGet]
         [ActionName("ProjectDetail")]
         public IActionResult Detail(int id)
@@ -84,7 +126,18 @@ namespace TaskManager.Controllers
 
             _db.Projects.Update(project);
             _db.SaveChanges();
-            return RedirectToAction("Index","Projects");
+            return RedirectToAction("ProjectDetail","Projects",new {id = project.Id});
+        }
+        [ActionName("DeleteProject")]
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var project = _db.Projects.FirstOrDefault(t => t.Id == id);
+            if (project is null)
+                return NotFound();
+            _db.Projects.Remove(project);
+            _db.SaveChanges();
+            return RedirectToAction("ProjectDetail","Projects",new {id = project.Id});
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿@using TaskManager.Models
-@using ProjectStatus = TaskManager.Models.ProjectStatus
+﻿@using ProjectStatus = TaskManager.Models.ProjectStatus
 @model System.Collections.Generic.List<TaskManager.Models.Project>
 
 @{
@@ -16,20 +15,30 @@
             <thead>
             <tr>
                 <th class="text-center">
-                    Project id
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.IdSort">
+                        Project id
+                    </a>
                 </th>
                 <th class="text-center">
-                    Project Name
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">
+                        Project Name
+                    </a>
                 </th>
                 <th class="text-center">
-                    Priority
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.PrioritySort">
+                        Project Priority
+                    </a>
                 </th>
                 <th class="text-center" >
-                    Status
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">
+                        Status
+                    </a>
                 </th>
                 <th class="text-center">
-                                    Create Date
-                                </th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.CreateDateSort">
+                        Create Date
+                    </a>
+                </th>
                 <th class="text-center">
                     Actions
                 </th>
