@@ -28,8 +28,12 @@
                     Status
                 </th>
                 <th class="text-center">
+                                    Create Date
+                                </th>
+                <th class="text-center">
                     Actions
                 </th>
+                
             </tr>
             </thead>
             <tbody>
@@ -42,21 +46,25 @@
                      <td class="text-center" > @project.Priority</td>
                      
                      <td class="text-center" >
-                             @if (project.Status == ProjectStatus.NotStarted)
-                             {
-                                 <p class="ColorRed">@project.Status</p>
-                             }
-                             @if (project.Status == ProjectStatus.Active)
-                             {
-                                 <p class="ColorBlue">@project.Status</p>
-                             }
-                             @if (project.Status == ProjectStatus.Completed)
-                             {
-                                 <p class="ColorGreen">@project.Status</p>
-                             }
-                         </td>
+                         @if (project.Status == ProjectStatus.NotStarted)
+                         {
+                             <p class="ColorRed">@project.Status</p>
+                         }
+                         @if (project.Status == ProjectStatus.Active)
+                         {
+                             <p class="ColorBlue">@project.Status</p>
+                         }
+                         @if (project.Status == ProjectStatus.Completed)
+                         {
+                             <p class="ColorGreen">@project.Status</p>
+                         }
+                     </td>
+                     <td class="text-center">
+                         @project.CreateDate
+                     </td>
                      <td class="text-center">
                          <a class="btn-primary btn text-center" asp-action="ProjectDetail" asp-controller="Projects" asp-route-id="@project.Id">Detail</a>
+                         <a class="btn-primary btn text-center" asp-action="EditProject" asp-controller="Projects" asp-route-id="@project.Id">Edit</a>
                      </td>
                  </tr>
              }

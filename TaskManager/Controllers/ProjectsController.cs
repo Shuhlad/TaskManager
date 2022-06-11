@@ -61,6 +61,30 @@ namespace TaskManager.Controllers
             }
             return View("AddProject",project);
         }
-        
+
+        [HttpGet]
+        [ActionName("EditProject")]
+        public IActionResult Edit(int id)
+        {
+            var project = _db.Projects
+                .FirstOrDefault(t => t.Id == id);
+            if (project is null)
+            {
+                return NotFound();
+            }
+            return View(project);
+        }
+
+        [HttpPost]
+        [ActionName("EditProject")]
+        public IActionResult Edit(Project project)
+        {
+            if (project is null)
+                return NotFound();
+
+            _db.Projects.Update(project);
+            _db.SaveChanges();
+            return RedirectToAction("Index","Projects");
+        }
     }
 }
