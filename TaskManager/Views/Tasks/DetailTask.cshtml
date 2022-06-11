@@ -1,0 +1,80 @@
+﻿@using TaskStatus = TaskManager.Models.TaskStatus
+@model TaskManager.Models.Task
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card w-50">
+            <div class="card-body">
+                <div class="card-text">
+                    Task Id: @Model.Id
+                </div>
+                <div class="mb-3">
+                    <div class="card-text">
+                        Name: @Model.Name            
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="card-text">
+                        Priority: @Model.Priority             
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="card-text">
+                        Status: @Model.Status            
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="card-text">
+                        Create date: @Model.CreateDate
+                    </div>
+                </div>
+                @if (Model.InProgressDate is not null)
+                {
+                    <div class="mb-3">
+                        <div class="card-text">
+                            Start date: @Model.InProgressDate
+                        </div>
+                    </div>
+                }
+                @if (Model.DoneDate is not null)
+                {
+                    <div class="mb-3">
+                        <div class="card-text">
+                            Finish date: @Model.DoneDate
+                            </div>
+                        </div>
+                                    
+                }
+                <div class="mb-3">
+                    <div class="card-text">
+                        Task description: 
+                        @Model.Description
+                    </div>
+                </div>
+
+                <div class="card-text">@ViewBag.ErrorMessage</div>
+                <button class="card-footer btn btn-light border" asp-controller="Projects" asp-action="ProjectDetail" asp-route-id="@Model.ProjectId">Return </button>
+                @if (Model.Status == TaskStatus.ToDo)
+                {
+                    <a class="card-footer btn-primary btn text-center" asp-action="ToInProgress" asp-controller="Tasks" asp-route-id="@Model.Id" method="POST">Start task</a>
+                    <a class="card-footer btn-danger btn text-center" asp-action="Delete" asp-controller="Tasks" asp-route-id="@Model.Id" method="POST">Delete task</a>
+                }
+                @if (Model.Status ==  TaskStatus.InProgress)
+                {
+                    <a class="card-footer btn-primary btn text-center" asp-action="ToDone" asp-controller="Tasks" asp-route-id="@Model.Id" method="POST">Finish task</a>
+                }
+                @if (Model.Status == TaskStatus.Done)
+                {
+                    <a class="card-footer btn-danger btn text-center" asp-action="Delete" asp-controller="Tasks" asp-route-id="@Model.Id" method="POST">Delete task</a>
+                    
+                }
+                
+            </div>
+        </div>
+    </div>
+</div>

@@ -80,5 +80,76 @@ namespace TaskManager.Controllers
             _db.SaveChanges();
             return RedirectToAction("ProjectDetail","Projects", new {id = task.ProjectId});
         }
+
+        [HttpGet]
+        [ActionName("DetailTask")]
+        public IActionResult Detail(int id)
+        {
+            var task = _db.Tasks
+                .FirstOrDefault(t => t.Id == id);
+            if (task is null)
+            {
+                return NotFound();
+            }
+            return View(task);
+        }
+
+        public IActionResult ToInProgress(int id)
+        {
+            var task = _db.Tasks.FirstOrDefault(t => t.Id == id);
+            if (task is null)
+                return NotFound();
+            if (task.Status == TaskStatus.ToDo)
+            {
+                task.Status = TaskStatus.InProgress;
+                task.InProgressDate = DateTime.Now;
+                _db.SaveChanges();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Only new task can be started";
+            }
+            return RedirectToAction("ProjectDetail","Projects", new {id = task.ProjectId});
+        }
+        
+        public IActionResult ToDone(int id)
+        {
+            var task = _db.Tasks.FirstOrDefault(t => t.Id == id);
+            if (task is null)
+                return NotFound();
+            
+            if (task.Status == TaskStatus.InProgress)
+            {
+                task.Status = TaskStatus.Done;
+                task.DoneDate = DateTime.Now;
+                _db.SaveChanges();
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Only started task can be finished";
+            }
+            
+            return RedirectToAction("ProjectDetail","Projects",new {id = task.ProjectId});
+        }
+        
+        
+        public IActionResult Delete(int id)
+        {
+            var task = _db.Tasks.FirstOrDefault(t => t.Id == id);
+            if (task is null)
+                return NotFound();
+            if (task.Status is TaskStatus.ToDo or TaskStatus.Done)
+            {
+                _db.Tasks.Remove(task);
+                _db.SaveChanges();
+                
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Only new and finished task can be deleted";
+            }
+            return RedirectToAction("ProjectDetail","Projects",new {id = task.ProjectId});
+        }
+        
     }
 }
